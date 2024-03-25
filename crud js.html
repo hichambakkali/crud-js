@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .liked {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="cart">
+        <div class="item">
+            <span class="name">Item 1</span>
+            <button class="decrease">-</button>
+            <span class="quantity">1</span>
+            <button class="increase">+</button>
+            <button class="remove">Remove</button>
+            <button class="like">❤</button>
+            <span class="price">10</span>
+        </div>
+    </div>
+    <div>Total: <span id="total">10</span></div>
+
+    <script>
+        function updateTotal() {
+            var items = document.querySelectorAll('#cart .item');
+            var total = 0;
+            items.forEach(function(item) {
+                var quantity = parseInt(item.querySelector('.quantity').textContent);
+                var price = parseInt(item.querySelector('.price').textContent);
+                total += quantity * price;
+            });
+            document.querySelector('#total').textContent = total;
+        }
+
+        document.querySelectorAll('.increase').forEach(function(button) {
+            button.addEventListener('click', function() {
+                var quantityEl = button.previousElementSibling;
+                quantityEl.textContent = parseInt(quantityEl.textContent) + 1;
+                updateTotal();
+            });
+        });
+
+        document.querySelectorAll('.decrease').forEach(function(button) {
+            button.addEventListener('click', function() {
+                var quantityEl = button.nextElementSibling;
+                if (parseInt(quantityEl.textContent) > 1) {
+                    quantityEl.textContent = parseInt(quantityEl.textContent) - 1;
+                    updateTotal();
+                }
+            });
+        });
+
+        document.querySelectorAll('.remove').forEach(function(button) {
+            button.addEventListener('click', function() {
+                button.parentElement.remove();
+                updateTotal();
+            });
+        });
+
+        document.querySelectorAll('.like').forEach(function(button) {
+            button.addEventListener('click', function() {
+                button.classList.toggle('liked');
+            });
+        });
+    </script>
+</body>
+</html>
